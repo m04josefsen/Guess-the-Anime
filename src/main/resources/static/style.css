@@ -17,3 +17,7 @@ body {
     border-radius: 5%;
     padding: 10px;
 }
+
+#main-container > * {
+    margin-bottom: 10px;
+}

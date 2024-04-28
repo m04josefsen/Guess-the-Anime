@@ -76,10 +76,10 @@ function addAnimeToDatabase(anime) {
 function addPlayButton() {
     //TODO: Må fikse noe med create account, enten her eller i addLoginInputs funksjonen
 
-    let print = "<button>" + "Play" + "</button>";
-    print += "<button>" + "Log in" + "</button>";
-    print += "<button>" + "Log out" + "</button>";
-    print += "<button>" + "See stats" + "</button>";
+    let print = "<button class='btn btn-primary'>" + "Play" + "</button>";
+    print += "<button class='btn btn-primary'>" + "Log in" + "</button>";
+    print += "<button class='btn btn-danger'>" + "Log out" + "</button>";
+    print += "<button class='btn btn-secondary'>" + "See stats" + "</button>";
 
     document.getElementById("main-container").innerHTML = print;
 }
