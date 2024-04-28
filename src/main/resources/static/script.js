@@ -2,6 +2,7 @@ let animeRanking = [];
 
 document.addEventListener('DOMContentLoaded', function() {
     fetchTopAnimes();
+    addPlayButton();
 
     console.log('Document is ready');
 });
@@ -73,8 +74,11 @@ function addAnimeToDatabase(anime) {
 }
 
 function addPlayButton() {
+    //TODO: Må fikse noe med create account, enten her eller i addLoginInputs funksjonen
+
     let print = "<button>" + "Play" + "</button>";
     print += "<button>" + "Log in" + "</button>";
+    print += "<button>" + "Log out" + "</button>";
     print += "<button>" + "See stats" + "</button>";
 
     document.getElementById("main-container").innerHTML = print;
