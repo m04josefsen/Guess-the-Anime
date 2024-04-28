@@ -82,49 +82,40 @@ function addLoginInputs() {
     document.getElementById("main-container").innerHTML = print;
 }
 
-function getAllAnimes() {
-    fetch("/getAllAnimes", {
+function getRandomAnimes() {
+    fetch("getRandomAnimes", {
         method: "GET"
-    }).then(response => {
+    })
+        .then((response) => {
         if(!response.ok) {
             throw new Error("Response was not ok");
         }
         return response.json();
-    }).then(animeList => {
+    })
+        .then(animeList => {
         console.log(animeList);
 
-        getRandomAnime(animeList);
-    }).catch(error => {
-        console.error("There was an error getting anime list: ", error);
+        displayQuestion(animeList);
+    })
+        .catch(error => {
+        console.error("There was an error getting random animes list.");
     })
 }
 
-function getRandomAnime(animeList) {
-    const randomAnime = animeList[randomNumber0to25()];
-    console.log(randomAnime.titleEnglish);
+function displayQuestion(animeList) {
+    const anime1 = animeList[0];
+    const anime2 = animeList[1];
+    const anime3 = animeList[2];
+    const anime4 = animeList[3];
 
-    //TODO: IF STATEMENT IF DE != DE ANDRE SÅ GÅR DET BRA
-    choice1Anime = animeList[randomNumber0to25()];
-    choice2Anime = animeList[randomNumber0to25()];
-    choice3Anime = animeList[randomNumber0to25()];
-
-
-    displayBlurredAnime(randomAnime, choice1Anime, choice2Anime, choice3Anime);
-}
-
-function randomNumber0to25() {
-    const randomNumber = Math.floor(Math.random() * 25);
-    return randomNumber;
-}
-
-function displayBlurredAnime(anime, choice1, choice2, choice3) {
-    const image = "<img src='" + anime.imageUrl +"' style='filter:blur(8px)'>";
+    const image = "<img src='" + anime1.imageUrl +"' style='filter:blur(8px)'>";
     document.getElementById("image-container").innerHTML = image;
 
-    let print = "<button class='btn btn-primary'>" + anime.titleEnglish + "</button>";
-    print += "<button class='btn btn-primary'>" + choice1.titleEnglish + "</button>";
-    print += "<button class='btn btn-primary'>" + choice2.titleEnglish + "</button>";
-    print += "<button class='btn btn-primary'>" + choice3.titleEnglish + "</button>";
+    let print = "<button class='btn btn-primary'>" + anime1.titleEnglish + "</button>";
+    print += "<button class='btn btn-primary'>" + anime2.titleEnglish + "</button>";
+    print += "<button class='btn btn-primary'>" + anime3.titleEnglish + "</button>";
+    print += "<button class='btn btn-primary'>" + anime4.titleEnglish + "</button>";
 
     document.getElementById("choice-container").innerHTML = print;
 }
+
