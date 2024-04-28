@@ -9,30 +9,36 @@ import java.util.List;
 public class AccountController {
 
     @Autowired
-    private AccountService accountService;
+    private AccountRepository rep;
 
     //Save operation
-    @PostMapping("/accounts")
+    @PostMapping("/saveAccount")
     public Account saveAccount(@RequestBody Account account) {
-        return accountService.saveAccount(account);
+        return rep.save(account);
     }
 
     //Read operation
-    @PostMapping("/accounts")
+    @PostMapping("/listAccounts")
     public List<Account> fetchAccountList() {
-        return accountService.fetchAccountList();
+        return rep.findAll();
     }
 
     //Update operation
-    @PutMapping("/accounts/{id}")
+    /*
+    @PostMapping("/updateAccount")
     public Account updateAccount(@RequestBody Account account, @PathVariable Long id) {
-        return accountService.updateAccount(account, id);
+        return rep.save(account, id);
+    }
+     */
+    @PostMapping("/updateAccount")
+    public Account updateAccount(@RequestBody Account account) {
+        return rep.save(account);
     }
 
     //Delete operation
-    @DeleteMapping("/accounts/{id}")
+    @DeleteMapping("/deleteAccount")
     public String deleteAccountById(@PathVariable Long id) {
-        accountService.deleteAccountById(id);
+        rep.deleteById(id);
         return "Account deleted";
     }
 }
