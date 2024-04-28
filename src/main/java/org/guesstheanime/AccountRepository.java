@@ -7,6 +7,7 @@ import java.util.List;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
+    /*
     Account saveAccount(Account account);
 
     List<Account> fetchAllAccounts();
@@ -14,4 +15,5 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     Account updateAccount(Account account, Long id);
 
     void deleteAccountById(Long id);
+     */
 }
