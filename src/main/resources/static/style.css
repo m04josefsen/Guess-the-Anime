@@ -21,3 +21,19 @@ body {
 #main-container > * {
     margin-bottom: 10px;
 }
+
+.game {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#choice-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#choice-container > * {
+    margin-bottom: 10px;
+}
