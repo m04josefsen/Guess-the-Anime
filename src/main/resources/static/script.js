@@ -1,5 +1,11 @@
 let animeRanking = [];
 
+document.addEventListener('DOMContentLoaded', function() {
+    fetchTopAnimes();
+
+    console.log('Document is ready');
+});
+
 function fetchTopAnimes() {
     const url = "https://api.jikan.moe/v4/top/anime";
 
@@ -43,7 +49,7 @@ function fetchAnimeInformation() {
             imageUrl : anime.images.jpg.large_image_url
         };
 
-        addAnimeToDatabase(aniObject);
+        //addAnimeToDatabase(aniObject);
     }
 }
 
@@ -66,3 +72,19 @@ function addAnimeToDatabase(anime) {
     });
 }
 
+function addPlayButton() {
+    let print = "<button>" + "Play" + "</button>";
+    print += "<button>" + "Log in" + "</button>";
+    print += "<button>" + "See stats" + "</button>";
+
+    document.getElementById("main-container").innerHTML = print;
+}
+
+function addLoginInputs() {
+    let print = "<input class='form-control' type='text' placeholder='Firstname'>";
+    print += "<input class='form-control' type='text' placeholder='Lastname'>";
+    print += "<input class='form-control' type='text' placeholder='Email'>";
+    print += "<input class='form-control' type='text' placeholder='Password'>";
+
+    document.getElementById("main-container").innerHTML = print;
+}
