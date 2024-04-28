@@ -1,9 +1,9 @@
 package org.guesstheanime;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class AnimeController {
@@ -11,9 +11,20 @@ public class AnimeController {
     @Autowired
     AnimeRepository rep;
 
-    //Save operation
-    @PostMapping("saveAnime")
+    @PostMapping("/saveAnime")
     public Anime saveAnime(@RequestBody Anime anime) {
         return rep.save(anime);
     }
+
+    @GetMapping("/getAllAnimes")
+    public List<Anime> getAllAnimes() {
+        return rep.findAll();
+    }
+
+    /*
+    @GetMapping("/getAnime")
+    public Anime getAnime(@RequestParam int randomNumber) {
+        return rep.
+    }
+     */
 }

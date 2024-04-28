@@ -37,8 +37,8 @@ public class AccountController {
 
     //Delete operation
     @DeleteMapping("/deleteAccount")
-    public String deleteAccountById(@PathVariable Long id) {
-        rep.deleteById(id);
+    public String deleteAccountById(@PathVariable String email) {
+        rep.deleteById(email);
         return "Account deleted";
     }
 }
