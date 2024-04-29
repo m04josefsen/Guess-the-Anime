@@ -1,4 +1,5 @@
 let animeRanking = [];
+let currentScore = [];
 
 document.addEventListener('DOMContentLoaded', function() {
     fetchTopAnimes();
@@ -65,7 +66,7 @@ function addAnimeToDatabase(anime) {
 function addPlayButton() {
     //TODO: Må fikse noe med create account, enten her eller i addLoginInputs funksjonen
 
-    let print = "<button class='btn btn-primary'>" + "Play" + "</button>";
+    let print = "<button class='btn btn-primary' onclick='getRandomAnimes()'>" + "Play" + "</button>";
     print += "<button class='btn btn-primary'>" + "Log in" + "</button>";
     print += "<button class='btn btn-danger'>" + "Log out" + "</button>";
     print += "<button class='btn btn-secondary'>" + "See stats" + "</button>";
@@ -103,6 +104,14 @@ function getRandomAnimes() {
 }
 
 function displayQuestion(animeList) {
+    let divs = "<div id='image-container'></div>";
+    divs += "<div id='choice-container'></div>";
+    const mainContainer = document.getElementById("main-container");
+
+    mainContainer.style.flexDirection = "row";
+    mainContainer.width = "auto";
+    mainContainer.innerHTML = divs;
+
     const anime1 = animeList[0];
     const anime2 = animeList[1];
     const anime3 = animeList[2];
@@ -117,9 +126,23 @@ function displayQuestion(animeList) {
     let print = "";
 
     animeTitles.forEach(title => {
-        print += "<button class='btn btn-primary'>" + title + "</button>";
+        print += "<button class='btn btn-primary' onclick='checkAnswer(\"" + anime1.titleEnglish + "\", \"" + title + "\")'>" + title + "</button>";
     })
 
     document.getElementById("choice-container").innerHTML = print;
 }
 
+function checkAnswer(correctAnimeTitle, animeTitle) {
+    if(animeTitle === correctAnimeTitle) {
+        currentScore++;
+        getRandomAnimes();
+    }
+    else {
+        currentScore = 0;
+        endScreen();
+    }
+}
+
+function endScreen() {
+
+}
