@@ -31,6 +31,6 @@ body {
     margin-bottom: 10px;
 }
 
-#image-container {
-    width: 80%;
+#image-container img{
+    width: 50%;
 }
