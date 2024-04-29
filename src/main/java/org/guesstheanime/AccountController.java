@@ -13,8 +13,8 @@ public class AccountController {
 
     //Save operation
     @PostMapping("/saveAccount")
-    public Account saveAccount(@RequestBody Account account) {
-        return rep.save(account);
+    public void saveAccount(@RequestBody Account account) {
+        rep.save(account);
     }
 
     //Read operation
