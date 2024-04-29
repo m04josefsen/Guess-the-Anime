@@ -1,5 +1,7 @@
 let animeRanking = [];
 let currentScore = [];
+let inputCounter = 0;
+let isLoggedIn = false;
 
 document.addEventListener('DOMContentLoaded', function() {
     fetchTopAnimes();
@@ -67,20 +69,66 @@ function addPlayButton() {
     //TODO: Må fikse noe med create account, enten her eller i addLoginInputs funksjonen
 
     let print = "<button class='btn btn-primary' onclick='getRandomAnimes()'>" + "Play" + "</button>";
-    print += "<button class='btn btn-primary'>" + "Log in" + "</button>";
+    //TODO: if loggedin så må den bli fjerna eller deaktivert, kanksje alert pop up
+    print += "<button class='btn btn-primary' onclick='addCreateAccount()'>" + "Create account" + "</button>";
+    print += "<button class='btn btn-primary' onclick='addLoginInputs()'>" + "Log in" + "</button>";
     print += "<button class='btn btn-danger'>" + "Log out" + "</button>";
     print += "<button class='btn btn-secondary'>" + "See stats" + "</button>";
 
+    resetMainContainer();
     document.getElementById("main-container").innerHTML = print;
 }
 
 function addLoginInputs() {
-    let print = "<input class='form-control' type='text' placeholder='Firstname'>";
-    print += "<input class='form-control' type='text' placeholder='Lastname'>";
-    print += "<input class='form-control' type='text' placeholder='Email'>";
-    print += "<input class='form-control' type='text' placeholder='Password'>";
+    if(!isLoggedIn) {
+        let print = "<input class='form-control' type='text' placeholder='Firstname'>";
+        print += "<input class='form-control' type='text' placeholder='Lastname'>";
+        print += "<input class='form-control' type='text' placeholder='Email'>";
+        print += "<input class='form-control' type='text' placeholder='Password'>";
 
-    document.getElementById("main-container").innerHTML = print;
+        resetMainContainer();
+        document.getElementById("main-container").innerHTML = print;
+    }
+    else {
+        alert("You are already logged in!");
+    }
+}
+
+function addCreateAccount() {
+    if(!isLoggedIn) {
+        let print = "<input class='form-control' id='firstnameInput' type='text' placeholder='Firstname'>";
+        print += "<input class='form-control' id='lastnameInput' type='text' placeholder='Lastname'>";
+        print += "<input class='form-control' id='emailInput' type='text' placeholder='Email'>";
+        print += "<input class='form-control' id='passwordInput' type='text' placeholder='Password'>";
+        print += "<input class='form-control' id='confirmPasswordInput' type='text' placeholder='Confirm Password'>";
+        print += "<button class='btn btn-primary' onclick='validateInputs()'>" + "Create Account" + "</button>";
+
+        resetMainContainer();
+        document.getElementById("main-container").innerHTML = print;
+    }
+    else {
+        alert("You are already logged in!");
+    }
+}
+
+function validateInputs() {
+    if(inputCounter === 5) {
+        createAccount();
+        //TODO: EMPTY INPUT FIELDS HERE
+    }
+    else {
+        //TODO: add error thingy here
+    }
+}
+
+function createAccount() {
+
+    fetch()
+}
+
+function resetMainContainer() {
+    const mainContainer = document.getElementById("main-container");
+    mainContainer.style.flexDirection = "column";
 }
 
 function getRandomAnimes() {
@@ -138,11 +186,30 @@ function checkAnswer(correctAnimeTitle, animeTitle) {
         getRandomAnimes();
     }
     else {
-        currentScore = 0;
+        if(isLoggedIn) {
+            saveScore();
+        }
+
         endScreen();
     }
 }
 
-function endScreen() {
+function saveScore() {
+    //ACCOUNT POST NOE
+}
 
+function endScreen() {
+    /*
+    fetch("/getHighscore", {
+
+    });
+     */
+
+    let print = "<button class='btn btn-danger' onclick='addPlayButton()'>" + "Go back" + "</button>";
+    print += "<div>" + "Score: " + currentScore + "</div>";
+    print += "<div>" + "Highscore: " + "</div>";
+
+    resetMainContainer();
+    document.getElementById("main-container").innerHTML = print;
+    currentScore = 0;
 }
