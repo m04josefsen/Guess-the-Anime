@@ -111,10 +111,14 @@ function displayQuestion(animeList) {
     const image = "<img src='" + anime1.imageUrl +"' style='filter:blur(8px)'>";
     document.getElementById("image-container").innerHTML = image;
 
-    let print = "<button class='btn btn-primary'>" + anime1.titleEnglish + "</button>";
-    print += "<button class='btn btn-primary'>" + anime2.titleEnglish + "</button>";
-    print += "<button class='btn btn-primary'>" + anime3.titleEnglish + "</button>";
-    print += "<button class='btn btn-primary'>" + anime4.titleEnglish + "</button>";
+    let animeTitles = [anime1.titleEnglish, anime2.titleEnglish, anime3.titleEnglish, anime4.titleEnglish];
+    animeTitles = animeTitles.sort(() => Math.random() - 0.5);
+
+    let print = "";
+
+    animeTitles.forEach(title => {
+        print += "<button class='btn btn-primary'>" + title + "</button>";
+    })
 
     document.getElementById("choice-container").innerHTML = print;
 }
