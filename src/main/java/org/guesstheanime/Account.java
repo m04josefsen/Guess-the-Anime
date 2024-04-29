@@ -17,12 +17,14 @@ public class Account {
     private String firstname;
     private String lastname;
     private String password;
+    private int highscore;
 
-    public Account(String email, String firstname, String lastname, String password) {
+    public Account(String email, String firstname, String lastname, String password, int highscore) {
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
         this.password = password;
+        this.highscore = highscore;
     }
 
     public Account(){}
@@ -57,5 +59,13 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getHighscore() {
+        return highscore;
+    }
+
+    public void setHighscore(int highscore) {
+        this.highscore = highscore;
     }
 }
