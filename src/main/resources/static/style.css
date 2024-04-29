@@ -21,3 +21,16 @@ body {
 #main-container > * {
     margin-bottom: 10px;
 }
+
+#choice-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#choice-container > * {
+    margin-bottom: 10px;
+}
+
+#image-container img{
+    width: 50%;
+}

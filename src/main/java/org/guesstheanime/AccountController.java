@@ -23,13 +23,6 @@ public class AccountController {
         return rep.findAll();
     }
 
-    //Update operation
-    /*
-    @PostMapping("/updateAccount")
-    public Account updateAccount(@RequestBody Account account, @PathVariable Long id) {
-        return rep.save(account, id);
-    }
-     */
     @PostMapping("/updateAccount")
     public Account updateAccount(@RequestBody Account account) {
         return rep.save(account);
@@ -37,8 +30,14 @@ public class AccountController {
 
     //Delete operation
     @DeleteMapping("/deleteAccount")
-    public String deleteAccountById(@PathVariable Long id) {
-        rep.deleteById(id);
+    public String deleteAccountById(@PathVariable String email) {
+        rep.deleteById(email);
         return "Account deleted";
+    }
+
+    @GetMapping("/getHighscore")
+    public int getHighscore(@PathVariable String email) {
+        Account account = rep.getReferenceById(email);
+        return account.getHighscore();
     }
 }
