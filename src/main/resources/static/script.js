@@ -1,6 +1,6 @@
 let animeRanking = [];
 let currentScore = [];
-let inputCounter = 5;
+let inputCounter = 0;
 let isLoggedIn = false;
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -112,6 +112,20 @@ function addCreateAccount() {
 }
 
 function validateInputs() {
+    //TODO: MÅ LAGE ERROR MESSAGE; HELTS GJENNOM BOOTSTRAP
+    stringValidation(document.getElementById("firstnameInput").value, "firstname");
+    stringValidation(document.getElementById("lastnameInput").value, "lastname");
+    emailValidation(document.getElementById("emailInput").value);
+    passwordValidation(document.getElementById("passwordInput").value);
+
+    if(document.getElementById("passwordInput").value === document.getElementById("confirmPasswordInput").value){
+        inputCounter++;
+    }
+    else {
+        //feilmelding her
+    }
+
+
     if(inputCounter === 5) {
         createAccount();
         //TODO: EMPTY INPUT FIELDS HERE
@@ -119,6 +133,48 @@ function validateInputs() {
     else {
         //TODO: add error thingy here
     }
+}
+
+function stringValidation(string, type) {
+    const namePattern = /^[a-zA-ZæøåÆØÅ]+$/;
+
+    if(!namePattern.test(string)) {
+        /*
+        let out = "You have to write a valid name";
+        out = out.fontcolor("RED");
+        document.getElementById(type + "Error").innerHTML = out;
+         */
+    }
+    else {
+        inputCounter++;
+    }
+}
+
+function emailValidation(email) {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(!emailPattern.test(email)) {
+        /*
+        let out = "You have to write a valid email";
+        out = out.fontcolor("RED");
+        document.getElementById("emailError").innerHTML = out;
+         */
+    }
+    else {
+        inputCounter++;
+    }
+}
+
+function passwordValidation(password) {
+    const passwordPattern = /^(?=.*[\wÆØÅæøå])(?=.*[\d])(?=.*[\W_]).{8,}$/;
+
+    if(!passwordPattern.test(password)) {
+        //NOE SKJER HER
+    }
+    else {
+        inputCounter++;
+    }
+
 }
 
 function createAccount() {
@@ -147,6 +203,8 @@ function createAccount() {
         .catch(error => {
         console.error("There was an error while creating account: ", error);
     })
+
+    inputCounter = 0;
 }
 
 function resetMainContainer() {
