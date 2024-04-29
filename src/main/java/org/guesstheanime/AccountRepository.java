@@ -7,13 +7,5 @@ import java.util.List;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, String> {
-    /*
-    Account saveAccount(Account account);
 
-    List<Account> fetchAllAccounts();
-
-    Account updateAccount(Account account, Long id);
-
-    void deleteAccountById(Long id);
-     */
 }
