@@ -1,6 +1,6 @@
 let animeRanking = [];
 let currentScore = [];
-let inputCounter = 0;
+let inputCounter = 5;
 let isLoggedIn = false;
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -122,8 +122,31 @@ function validateInputs() {
 }
 
 function createAccount() {
+    const account = {
+        email : document.getElementById("emailInput").value,
+        firstname : document.getElementById("firstnameInput").value,
+        lastname : document.getElementById("lastnameInput").value,
+        password : document.getElementById("passwordInput").value,
+        highscore : 0
+    };
 
-    fetch()
+    fetch("saveAccount", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(account)
+    }).then(response => {
+        if(!response.ok) {
+            throw new Error("Response was not ok");
+        }
+    })
+        .then(data => {
+        console.log("Account was successfully added to database: ", data);
+    })
+        .catch(error => {
+        console.error("There was an error while creating account: ", error);
+    })
 }
 
 function resetMainContainer() {
