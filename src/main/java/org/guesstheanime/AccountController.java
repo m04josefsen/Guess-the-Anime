@@ -2,10 +2,13 @@ package org.guesstheanime;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @RestController
@@ -47,7 +50,6 @@ public class AccountController {
         }
     }
 
-    //Read operation
     @PostMapping("/listAccounts")
     public List<Account> fetchAccountList() {
         try {
@@ -74,7 +76,6 @@ public class AccountController {
         }
     }
 
-    //Delete operation
     @DeleteMapping("/deleteAccount")
     public void deleteAccountById(@PathVariable String email) {
         try {
@@ -85,6 +86,7 @@ public class AccountController {
             logger.severe("Error in deleteAccountById: " + e.getMessage());
         }
     }
+
     @GetMapping("/getHighscore")
     public int getHighscore(@PathVariable String email) {
         try {
@@ -97,4 +99,32 @@ public class AccountController {
             return 0;
         }
     }
+
+    /*
+    @GetMapping("/login")
+    public Account login(@RequestParam String email, @RequestParam String password) {
+        Account acc = rep.getReferenceById(email);
+        if(acc.getPassword().equals(password)) {
+            return acc;
+        }
+        else {
+            return null;
+        }
+    }
+
+     */
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> loginRequest) {
+        String email = loginRequest.get("email");
+        String password = loginRequest.get("password");
+
+        Account acc = rep.getReferenceById(email);
+        if (acc != null && acc.getPassword().equals(password)) {
+            return ResponseEntity.ok(acc);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+        }
+    }
+
 }
