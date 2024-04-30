@@ -1,5 +1,5 @@
 let animeRanking = [];
-let currentScore = [];
+let currentScore = 0;
 let inputCounter = 0;
 let isLoggedIn = false;
 let currentAccount = {
@@ -336,15 +336,35 @@ function saveScore() {
 }
 
 function endScreen() {
-    /*
-    fetch("/getHighscore", {
+    if(currentScore > currentAccount.highscore) {
+        //TODO: må ha post for å oppdatere account, både på server og her
+        currentAccount.highscore = currentScore;
 
-    });
-     */
+        fetch("updateAccount", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(currentAccount)
+        })
+            .then(response => {
+            if(!response.ok) {
+                throw new Error("Response was not ok");
+            }
+            return response.json();
+        })
+            .then(data => {
+            //noe her
+        })
+            .catch(error => {
+            console.error("There was an error while saving account: ", error);
+        })
+
+    }
 
     let print = "<button class='btn btn-danger' onclick='addPlayButton()'>" + "Go back" + "</button>";
     print += "<div>" + "Score: " + currentScore + "</div>";
-    print += "<div>" + "Highscore: " + "</div>";
+    print += "<div>" + "Highscore: " + currentAccount.highscore + "</div>";
 
     resetMainContainer();
     document.getElementById("main-container").innerHTML = print;

@@ -39,11 +39,9 @@ public class AccountController {
         String email = loginRequest.get("email");
         String password = loginRequest.get("password");
 
-        // Retrieve the account from the repository
         Account acc = rep.getReferenceById(email);
 
         if (acc != null) {
-            // Retrieve the hashed password stored in the account
             String hashedPassword = acc.getPassword();
 
             // Check if the hashed password matches the input password after hashing
@@ -107,6 +105,19 @@ public class AccountController {
         catch(Exception e) {
             logger.severe("Error in getHighscore: " + e.getMessage());
             return 0;
+        }
+    }
+
+    @GetMapping("/getAccount")
+    public Account getAccount(@PathVariable String email) {
+        try {
+            Account acc = rep.getReferenceById(email);
+            logger.info("Account retrieved successfully");
+            return acc;
+        }
+        catch(Exception e) {
+            logger.severe("Error in getAccount: " + e.getMessage());
+            return null;
         }
     }
 }
