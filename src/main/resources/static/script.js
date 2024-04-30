@@ -331,10 +331,6 @@ function checkAnswer(correctAnimeTitle, animeTitle) {
     }
 }
 
-function saveScore() {
-    //ACCOUNT POST NOE
-}
-
 function endScreen() {
     if(currentScore > currentAccount.highscore) {
         //TODO: må ha post for å oppdatere account, både på server og her
