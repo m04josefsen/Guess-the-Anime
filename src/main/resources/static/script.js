@@ -1,7 +1,10 @@
 let animeRanking = [];
-let currentScore = [];
+let currentScore = 0;
 let inputCounter = 0;
 let isLoggedIn = false;
+let currentAccount = {
+
+};
 
 document.addEventListener('DOMContentLoaded', function() {
     fetchTopAnimes();
@@ -72,8 +75,13 @@ function addPlayButton() {
     //TODO: if loggedin så må den bli fjerna eller deaktivert, kanksje alert pop up
     print += "<button class='btn btn-primary' onclick='addCreateAccount()'>" + "Create account" + "</button>";
     print += "<button class='btn btn-primary' onclick='addLoginInputs()'>" + "Log in" + "</button>";
-    print += "<button class='btn btn-danger'>" + "Log out" + "</button>";
+    print += "<button class='btn btn-danger' onclick='logout()'>" + "Log out" + "</button>";
     print += "<button class='btn btn-secondary'>" + "See stats" + "</button>";
+
+    if(isLoggedIn) {
+        print += "<div>" + "You are currently logged in as: " + currentAccount.firstname + " " + currentAccount.lastname;
+        print += "</div>";
+    }
 
     resetMainContainer();
     document.getElementById("main-container").innerHTML = print;
@@ -81,16 +89,61 @@ function addPlayButton() {
 
 function addLoginInputs() {
     if(!isLoggedIn) {
-        let print = "<input class='form-control' type='text' placeholder='Firstname'>";
-        print += "<input class='form-control' type='text' placeholder='Lastname'>";
-        print += "<input class='form-control' type='text' placeholder='Email'>";
-        print += "<input class='form-control' type='text' placeholder='Password'>";
+        let print = "<input class='form-control' id='emailLoginInput' type='text' placeholder='Email'>";
+        print += "<input class='form-control' id='passwordLoginInput' type='text' placeholder='Password'>";
+        print += "<button class='btn btn-primary' onclick='login()'>" + "Log in" + "</button>";
+        print += "<button class='btn btn-secondary' onclick='addPlayButton()'>" + "Back" + "</button>";
 
         resetMainContainer();
         document.getElementById("main-container").innerHTML = print;
     }
     else {
         alert("You are already logged in!");
+    }
+}
+
+function login() {
+    const email = document.getElementById("emailLoginInput").value;
+    const password = document.getElementById("passwordLoginInput").value;
+
+    const url = "/login";
+    const data = {
+        email: email,
+        password: password
+    };
+
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Response was not ok");
+            }
+            return response.json();
+        })
+        .then(data => {
+            isLoggedIn = true;
+            currentAccount = data;
+            addPlayButton();
+        })
+        .catch(error => {
+            console.error("There was a problem while fetching data", error);
+        });
+
+}
+
+function logout() {
+    if(isLoggedIn) {
+        isLoggedIn = false;
+        currentAccount = {}
+        addPlayButton();
+    }
+    else {
+        alert("You are not logged in");
     }
 }
 
@@ -102,6 +155,7 @@ function addCreateAccount() {
         print += "<input class='form-control' id='passwordInput' type='text' placeholder='Password'>";
         print += "<input class='form-control' id='confirmPasswordInput' type='text' placeholder='Confirm Password'>";
         print += "<button class='btn btn-primary' onclick='validateInputs()'>" + "Create Account" + "</button>";
+        print += "<button class='btn btn-secondary' onclick='addPlayButton()'>" + "Back" + "</button>";
 
         resetMainContainer();
         document.getElementById("main-container").innerHTML = print;
@@ -112,6 +166,20 @@ function addCreateAccount() {
 }
 
 function validateInputs() {
+    //TODO: MÅ LAGE ERROR MESSAGE; HELTS GJENNOM BOOTSTRAP
+    stringValidation(document.getElementById("firstnameInput").value, "firstname");
+    stringValidation(document.getElementById("lastnameInput").value, "lastname");
+    emailValidation(document.getElementById("emailInput").value);
+    passwordValidation(document.getElementById("passwordInput").value);
+
+    if(document.getElementById("passwordInput").value === document.getElementById("confirmPasswordInput").value){
+        inputCounter++;
+    }
+    else {
+        //feilmelding her
+    }
+
+
     if(inputCounter === 5) {
         createAccount();
         //TODO: EMPTY INPUT FIELDS HERE
@@ -121,9 +189,78 @@ function validateInputs() {
     }
 }
 
-function createAccount() {
+function stringValidation(string, type) {
+    const namePattern = /^[a-zA-ZæøåÆØÅ]+$/;
 
-    fetch()
+    if(!namePattern.test(string)) {
+        /*
+        let out = "You have to write a valid name";
+        out = out.fontcolor("RED");
+        document.getElementById(type + "Error").innerHTML = out;
+         */
+    }
+    else {
+        inputCounter++;
+    }
+}
+
+function emailValidation(email) {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(!emailPattern.test(email)) {
+        /*
+        let out = "You have to write a valid email";
+        out = out.fontcolor("RED");
+        document.getElementById("emailError").innerHTML = out;
+         */
+    }
+    else {
+        inputCounter++;
+    }
+}
+
+function passwordValidation(password) {
+    //Minimum 8 charchters, minimum 1 number, minimum 1 non letter or number
+    const passwordPattern = /^(?=.*[\wÆØÅæøå])(?=.*[\d])(?=.*[\W_]).{8,}$/;
+
+    if(!passwordPattern.test(password)) {
+        //NOE SKJER HER
+    }
+    else {
+        inputCounter++;
+    }
+
+}
+
+function createAccount() {
+    const account = {
+        email : document.getElementById("emailInput").value,
+        firstname : document.getElementById("firstnameInput").value,
+        lastname : document.getElementById("lastnameInput").value,
+        password : document.getElementById("passwordInput").value,
+        highscore : 0
+    };
+
+    fetch("saveAccount", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(account)
+    }).then(response => {
+        if(!response.ok) {
+            throw new Error("Response was not ok");
+        }
+    })
+        .then(data => {
+        console.log("Account was successfully added to database: ", data);
+        inputCounter = 0;
+        addPlayButton();
+    })
+        .catch(error => {
+        console.error("There was an error while creating account: ", error);
+    })
+
 }
 
 function resetMainContainer() {
@@ -199,15 +336,35 @@ function saveScore() {
 }
 
 function endScreen() {
-    /*
-    fetch("/getHighscore", {
+    if(currentScore > currentAccount.highscore) {
+        //TODO: må ha post for å oppdatere account, både på server og her
+        currentAccount.highscore = currentScore;
 
-    });
-     */
+        fetch("updateAccount", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(currentAccount)
+        })
+            .then(response => {
+            if(!response.ok) {
+                throw new Error("Response was not ok");
+            }
+            return response.json();
+        })
+            .then(data => {
+            //noe her
+        })
+            .catch(error => {
+            console.error("There was an error while saving account: ", error);
+        })
+
+    }
 
     let print = "<button class='btn btn-danger' onclick='addPlayButton()'>" + "Go back" + "</button>";
     print += "<div>" + "Score: " + currentScore + "</div>";
-    print += "<div>" + "Highscore: " + "</div>";
+    print += "<div>" + "Highscore: " + currentAccount.highscore + "</div>";
 
     resetMainContainer();
     document.getElementById("main-container").innerHTML = print;

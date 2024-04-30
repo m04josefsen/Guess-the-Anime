@@ -1,14 +1,10 @@
 package org.guesstheanime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
 
 @Entity
-//@NoArgsConstructor
-//@AllArgsConstructor
-//@Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Account {
 
     @Id
