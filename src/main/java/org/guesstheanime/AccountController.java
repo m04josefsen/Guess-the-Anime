@@ -1,5 +1,6 @@
 package org.guesstheanime;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,34 +20,43 @@ public class AccountController {
     @Autowired
     private AccountRepository rep;
 
-    /*
-    private String encryptPassword(String password) {
-        //TODO; encrpyt password here, in saveAccount create a new account object with the account values and the new encrypted password
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String hashedPassword = encoder.encode(password);
-        return hashedPassword;
-    }
-
-    private boolean checkPassword(String password, String hashedPassword) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        if(encoder.matches(password, hashedPassword)) {
-            return true;
-        }
-        return false;
-    }
-
-     */
-
-    //Save operation
     @PostMapping("/saveAccount")
     public void saveAccount(@RequestBody Account account) {
         try {
-            //Account acc = new Account(account.getEmail(), account.getFirstname(), account.getLastname(), encryptPassword(account.getPassword()), account.getHighscore());
+            String hashedPassword = BCrypt.hashpw(account.getPassword(), BCrypt.gensalt());
+            account.setPassword(hashedPassword);
+
             rep.save(account);
             logger.info("Account saved successfully");
         }
         catch (Exception e) {
             logger.severe("Error in saveAccount: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> loginRequest) {
+        String email = loginRequest.get("email");
+        String password = loginRequest.get("password");
+
+        // Retrieve the account from the repository
+        Account acc = rep.getReferenceById(email);
+
+        if (acc != null) {
+            // Retrieve the hashed password stored in the account
+            String hashedPassword = acc.getPassword();
+
+            // Check if the hashed password matches the input password after hashing
+            if (BCrypt.checkpw(password, hashedPassword)) {
+                // Passwords match, return the account
+                return ResponseEntity.ok(acc);
+            } else {
+                // Passwords don't match, return unauthorized status
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+            }
+        } else {
+            // Account not found, return unauthorized status
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         }
     }
 
@@ -99,32 +109,4 @@ public class AccountController {
             return 0;
         }
     }
-
-    /*
-    @GetMapping("/login")
-    public Account login(@RequestParam String email, @RequestParam String password) {
-        Account acc = rep.getReferenceById(email);
-        if(acc.getPassword().equals(password)) {
-            return acc;
-        }
-        else {
-            return null;
-        }
-    }
-
-     */
-
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> loginRequest) {
-        String email = loginRequest.get("email");
-        String password = loginRequest.get("password");
-
-        Account acc = rep.getReferenceById(email);
-        if (acc != null && acc.getPassword().equals(password)) {
-            return ResponseEntity.ok(acc);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
-        }
-    }
-
 }
