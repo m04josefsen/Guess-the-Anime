@@ -69,18 +69,15 @@ function addAnimeToDatabase(anime) {
 }
 
 function addPlayButton() {
-    //TODO: Må fikse noe med create account, enten her eller i addLoginInputs funksjonen
-
     let print = "<button class='btn btn-primary' onclick='getRandomAnimes()'>" + "Play" + "</button>";
-    //TODO: if loggedin så må den bli fjerna eller deaktivert, kanksje alert pop up
-    print += "<button class='btn btn-primary' onclick='addCreateAccount()'>" + "Create account" + "</button>";
-    print += "<button class='btn btn-primary' onclick='addLoginInputs()'>" + "Log in" + "</button>";
-    print += "<button class='btn btn-danger' onclick='logout()'>" + "Log out" + "</button>";
-    print += "<button class='btn btn-secondary'>" + "See stats" + "</button>";
 
     if (isLoggedIn) {
+        print += "<button class='btn btn-danger' onclick='logout()'>" + "Log out" + "</button>";
+        print += "<button class='btn btn-secondary'>" + "See stats" + "</button>";
         print += "<div class='text-primary font-weight-bold'>You are currently logged in as: " + currentAccount.firstname + " " + currentAccount.lastname + "</div>";
     } else {
+        print += "<button class='btn btn-primary' onclick='addCreateAccount()'>" + "Create account" + "</button>";
+        print += "<button class='btn btn-primary' onclick='addLoginInputs()'>" + "Log in" + "</button>";
         print += "<div class='text-secondary'>You are currently playing as a guest</div>";
     }
 
@@ -334,10 +331,6 @@ function checkAnswer(correctAnimeTitle, animeTitle) {
         getRandomAnimes();
     }
     else {
-        if(isLoggedIn) {
-            saveScore();
-        }
-
         endScreen();
     }
 }
