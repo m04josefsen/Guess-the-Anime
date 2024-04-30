@@ -78,10 +78,13 @@ function addPlayButton() {
     print += "<button class='btn btn-danger' onclick='logout()'>" + "Log out" + "</button>";
     print += "<button class='btn btn-secondary'>" + "See stats" + "</button>";
 
-    if(isLoggedIn) {
-        print += "<div>" + "You are currently logged in as: " + currentAccount.firstname + " " + currentAccount.lastname;
-        print += "</div>";
+    if (isLoggedIn) {
+        print += "<div class='text-primary font-weight-bold'>You are currently logged in as: " + currentAccount.firstname + " " + currentAccount.lastname + "</div>";
+    } else {
+        print += "<div class='text-secondary'>You are currently playing as a guest</div>";
     }
+
+
 
     resetMainContainer();
     document.getElementById("main-container").innerHTML = print;
@@ -255,7 +258,15 @@ function createAccount() {
         .then(data => {
         console.log("Account was successfully added to database: ", data);
         inputCounter = 0;
-        addPlayButton();
+            let print = "<input class='form-control' id='emailLoginInput' type='text' placeholder='Email'>";
+            print += "<input class='form-control' id='passwordLoginInput' type='text' placeholder='Password'>";
+            document.getElementById("main-container").innerHTML = print;
+
+
+        document.getElementById("emailLoginInput").value = account.email;
+        document.getElementById("passwordLoginInput").value = account.password;
+
+        login();
     })
         .catch(error => {
         console.error("There was an error while creating account: ", error);
