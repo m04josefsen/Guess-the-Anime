@@ -72,7 +72,7 @@ function addPlayButton() {
     //TODO: if loggedin så må den bli fjerna eller deaktivert, kanksje alert pop up
     print += "<button class='btn btn-primary' onclick='addCreateAccount()'>" + "Create account" + "</button>";
     print += "<button class='btn btn-primary' onclick='addLoginInputs()'>" + "Log in" + "</button>";
-    print += "<button class='btn btn-danger'>" + "Log out" + "</button>";
+    print += "<button class='btn btn-danger' onclick='logout()'>" + "Log out" + "</button>";
     print += "<button class='btn btn-secondary'>" + "See stats" + "</button>";
 
     resetMainContainer();
@@ -81,16 +81,58 @@ function addPlayButton() {
 
 function addLoginInputs() {
     if(!isLoggedIn) {
-        let print = "<input class='form-control' type='text' placeholder='Firstname'>";
-        print += "<input class='form-control' type='text' placeholder='Lastname'>";
-        print += "<input class='form-control' type='text' placeholder='Email'>";
-        print += "<input class='form-control' type='text' placeholder='Password'>";
+        let print = "<input class='form-control' id='emailLoginInput' type='text' placeholder='Email'>";
+        print += "<input class='form-control' id='passwordLoginInput' type='text' placeholder='Password'>";
+        print += "<button class='btn btn-primary' onclick='login()'>" + "Log in" + "</button>";
+        print += "<button class='btn btn-secondary' onclick='addPlayButton()'>" + "Back" + "</button>";
 
         resetMainContainer();
         document.getElementById("main-container").innerHTML = print;
     }
     else {
         alert("You are already logged in!");
+    }
+}
+
+function login() {
+    const email = document.getElementById("emailLoginInput").value;
+    const password = document.getElementById("passwordLoginInput").value;
+
+    const url = "/login";
+    const data = {
+        email: email,
+        password: password
+    };
+
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Response was not ok");
+            }
+            return response.json();
+        })
+        .then(data => {
+            isLoggedIn = true;
+            console.log(data);
+        })
+        .catch(error => {
+            console.error("There was a problem while fetching data", error);
+        });
+
+}
+
+function logout() {
+    if(isLoggedIn) {
+        isLoggedIn = false;
+    }
+    else {
+        alert("You are not logged in");
     }
 }
 
@@ -102,6 +144,7 @@ function addCreateAccount() {
         print += "<input class='form-control' id='passwordInput' type='text' placeholder='Password'>";
         print += "<input class='form-control' id='confirmPasswordInput' type='text' placeholder='Confirm Password'>";
         print += "<button class='btn btn-primary' onclick='validateInputs()'>" + "Create Account" + "</button>";
+        print += "<button class='btn btn-secondary' onclick='addPlayButton()'>" + "Back" + "</button>";
 
         resetMainContainer();
         document.getElementById("main-container").innerHTML = print;
@@ -166,6 +209,7 @@ function emailValidation(email) {
 }
 
 function passwordValidation(password) {
+    //Minimum 8 charchters, minimum 1 number, minimum 1 non letter or number
     const passwordPattern = /^(?=.*[\wÆØÅæøå])(?=.*[\d])(?=.*[\W_]).{8,}$/;
 
     if(!passwordPattern.test(password)) {
@@ -199,12 +243,13 @@ function createAccount() {
     })
         .then(data => {
         console.log("Account was successfully added to database: ", data);
+        inputCounter = 0;
+        addPlayButton();
     })
         .catch(error => {
         console.error("There was an error while creating account: ", error);
     })
 
-    inputCounter = 0;
 }
 
 function resetMainContainer() {
