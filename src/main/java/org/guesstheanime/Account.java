@@ -1,14 +1,8 @@
 package org.guesstheanime;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
 
 @Entity
-//@NoArgsConstructor
-//@AllArgsConstructor
-//@Builder
 public class Account {
 
     @Id
