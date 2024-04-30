@@ -2,6 +2,9 @@ let animeRanking = [];
 let currentScore = [];
 let inputCounter = 0;
 let isLoggedIn = false;
+let currentAccount = {
+
+};
 
 document.addEventListener('DOMContentLoaded', function() {
     fetchTopAnimes();
@@ -75,6 +78,11 @@ function addPlayButton() {
     print += "<button class='btn btn-danger' onclick='logout()'>" + "Log out" + "</button>";
     print += "<button class='btn btn-secondary'>" + "See stats" + "</button>";
 
+    if(isLoggedIn) {
+        print += "<div>" + "You are currently logged in as: " + currentAccount.firstname + " " + currentAccount.lastname;
+        print += "</div>";
+    }
+
     resetMainContainer();
     document.getElementById("main-container").innerHTML = print;
 }
@@ -119,7 +127,8 @@ function login() {
         })
         .then(data => {
             isLoggedIn = true;
-            console.log(data);
+            currentAccount = data;
+            addPlayButton();
         })
         .catch(error => {
             console.error("There was a problem while fetching data", error);
@@ -130,6 +139,8 @@ function login() {
 function logout() {
     if(isLoggedIn) {
         isLoggedIn = false;
+        currentAccount = {}
+        addPlayButton();
     }
     else {
         alert("You are not logged in");
