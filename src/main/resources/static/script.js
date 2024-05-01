@@ -319,20 +319,34 @@ function displayQuestion(animeList) {
     let print = "";
 
     animeTitles.forEach(title => {
-        print += "<button class='btn btn-primary' onclick='checkAnswer(\"" + anime1.titleEnglish + "\", \"" + title + "\")'>" + title + "</button>";
+        print += "<button class='btn btn-primary' onclick='checkAnswer(\"" + anime1.titleEnglish + "\", \"" + title + "\", " + JSON.stringify(animeTitles) + ")'>" + title + "</button>";
     })
 
     document.getElementById("choice-container").innerHTML = print;
 }
 
-function checkAnswer(correctAnimeTitle, animeTitle) {
+function checkAnswer(correctAnimeTitle, animeTitle, animeTitles) {
+    let print = "";
+
+    animeTitles.forEach(title => {
+        if(title === correctAnimeTitle) {
+            print += "<button class='btn btn-primary' >" + title + "</button>";
+        }
+        else {
+            print += "<button class='btn btn-secondary' >" + title + "</button>";
+        }
+    })
+
     if(animeTitle === correctAnimeTitle) {
+        print += "<button class='btn btn-success' onclick='getRandomAnimes()'>" + "Next" + "</button>";
         currentScore++;
-        getRandomAnimes();
     }
     else {
-        endScreen();
+        print += "<button class='btn btn-danger' onclick='endScreen()'>" + "Back" + "</button>";
     }
+
+    document.getElementById("choice-container").innerHTML = print;
+
 }
 
 function endScreen() {
