@@ -310,7 +310,7 @@ function displayQuestion(animeList) {
     const anime3 = animeList[2];
     const anime4 = animeList[3];
 
-    const image = "<img src='" + anime1.imageUrl +"' style='filter:blur(8px)'>";
+    const image = "<img src='" + anime1.imageUrl + "'>";
     document.getElementById("image-container").innerHTML = image;
 
     let animeTitles = [anime1.titleEnglish, anime2.titleEnglish, anime3.titleEnglish, anime4.titleEnglish];
