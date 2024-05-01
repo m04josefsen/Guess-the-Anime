@@ -310,7 +310,7 @@ function displayQuestion(animeList) {
     const anime3 = animeList[2];
     const anime4 = animeList[3];
 
-    const image = "<img src='" + anime1.imageUrl + "'>";
+    const image = "<img src='" + anime1.imageUrl + "' style='filter:blur(8px)'>";
     document.getElementById("image-container").innerHTML = image;
 
     let animeTitles = [anime1.titleEnglish, anime2.titleEnglish, anime3.titleEnglish, anime4.titleEnglish];
@@ -326,11 +326,15 @@ function displayQuestion(animeList) {
 }
 
 function checkAnswer(correctAnimeTitle, animeTitle, animeTitles) {
+    const imageContainer = document.getElementById("image-container");
+    const imgElement = imageContainer.querySelector("img");
+    imgElement.style.filter = "none";
+
     let print = "";
 
     animeTitles.forEach(title => {
         if(title === correctAnimeTitle) {
-            print += "<button class='btn btn-primary' >" + title + "</button>";
+            print += "<button class='btn btn-success' >" + title + "</button>";
         }
         else {
             print += "<button class='btn btn-secondary' >" + title + "</button>";
@@ -338,7 +342,7 @@ function checkAnswer(correctAnimeTitle, animeTitle, animeTitles) {
     })
 
     if(animeTitle === correctAnimeTitle) {
-        print += "<button class='btn btn-success' onclick='getRandomAnimes()'>" + "Next" + "</button>";
+        print += "<button class='btn btn-primary' onclick='getRandomAnimes()'>" + "Next" + "</button>";
         currentScore++;
     }
     else {
