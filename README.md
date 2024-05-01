@@ -24,5 +24,10 @@ This project utilizes a combination of frontend and backend technologies to crea
 
 
 Screenshots
-
-Insert screenshots of your website here.
+![x](/src/main/resources/screenshots/x1.png?raw=true)
+![x](/src/main/resources/screenshots/x2.png?raw=true)
+![x](/src/main/resources/screenshots/x3.png?raw=true)
+![x](/src/main/resources/screenshots/x4.png?raw=true)
+![x](/src/main/resources/screenshots/x5.png?raw=true)
+![x](/src/main/resources/screenshots/x6.png?raw=true)
+![x](/src/main/resources/screenshots/x7.png?raw=true)
