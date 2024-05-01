@@ -1,17 +1,28 @@
 # Guess-the-Anime
 
-Notes for the application:
- - Guess the anime given
- - Blurred Anime image, maybe given 4 choices
- - Anime is taken from an API
- - No use of JQuery
- - Spring JPA instead of JDBC
- - Add security and encryption of password (Hashes and Salts)
+(README.md is created by ChatGPT)
 
- - Have a record, which is saved in the database, and that is how many you got in a row
+GuessTheAnime is a web application that allows users to play a guessing game where they have to identify anime titles based on provided images. The game presents users with four anime images, and they must choose the correct title out of the options provided.
+Description
 
-Current fixes:
- - front-end design
- - make secure for https
- - error handling in backend
- - show error on input in frontend
+This project utilizes a combination of frontend and backend technologies to create an interactive and engaging guessing game. Here's a brief overview of the technologies used:
+
+    Frontend:
+        HTML: Provides the structure of the website.
+        CSS: Defines the styles and layout of the website.
+        JavaScript: Implements the game logic and interactivity.
+        Bootstrap: Used for styling and layout components.
+
+    Backend:
+        Java: Backend logic is implemented using Java.
+        Spring Boot: Provides a framework for building robust and scalable web applications.
+        JPA (Java Persistence API): Used for object-relational mapping and accessing the database.
+        BCrypt: Used for hashing passwords for secure storage.
+
+    Database:
+        MySQL: The relational database management system used to store account and anime data.
+
+
+Screenshots
+
+Insert screenshots of your website here.
