@@ -7,14 +7,17 @@ let currentAccount = {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
-    fetchTopAnimes();
+    fetchTopAnimes(1);
+    fetchTopAnimes(2);
+    fetchTopAnimes(3);
     addPlayButton();
 
     console.log('Document is ready');
 });
 
-function fetchTopAnimes() {
-    const url = "https://api.jikan.moe/v4/top/anime";
+function fetchTopAnimes(page) {
+    //const url = "https://api.jikan.moe/v4/top/anime";
+    const url = `https://api.jikan.moe/v4/top/anime?page=${page}`;
 
     fetch(url, {
         method: "GET",
@@ -47,8 +50,12 @@ function fetchAnimeInformation() {
             url : anime.url,
             imageUrl : anime.images.jpg.large_image_url
         };
-
-        addAnimeToDatabase(aniObject);
+        if(aniObject.titleEnglish != null) {
+            addAnimeToDatabase(aniObject);
+        }
+        else {
+            console.log("Anime title is null");
+        }
     }
 }
 
