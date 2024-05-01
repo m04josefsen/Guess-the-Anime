@@ -310,7 +310,7 @@ function displayQuestion(animeList) {
     const anime3 = animeList[2];
     const anime4 = animeList[3];
 
-    const image = "<img src='" + anime1.imageUrl + "'>";
+    const image = "<img src='" + anime1.imageUrl + "' style='filter:blur(8px)'>";
     document.getElementById("image-container").innerHTML = image;
 
     let animeTitles = [anime1.titleEnglish, anime2.titleEnglish, anime3.titleEnglish, anime4.titleEnglish];
@@ -319,20 +319,38 @@ function displayQuestion(animeList) {
     let print = "";
 
     animeTitles.forEach(title => {
-        print += "<button class='btn btn-primary' onclick='checkAnswer(\"" + anime1.titleEnglish + "\", \"" + title + "\")'>" + title + "</button>";
+        print += "<button class='btn btn-primary' onclick='checkAnswer(\"" + anime1.titleEnglish + "\", \"" + title + "\", " + JSON.stringify(animeTitles) + ")'>" + title + "</button>";
     })
 
     document.getElementById("choice-container").innerHTML = print;
 }
 
-function checkAnswer(correctAnimeTitle, animeTitle) {
+function checkAnswer(correctAnimeTitle, animeTitle, animeTitles) {
+    const imageContainer = document.getElementById("image-container");
+    const imgElement = imageContainer.querySelector("img");
+    imgElement.style.filter = "none";
+
+    let print = "";
+
+    animeTitles.forEach(title => {
+        if(title === correctAnimeTitle) {
+            print += "<button class='btn btn-success' >" + title + "</button>";
+        }
+        else {
+            print += "<button class='btn btn-secondary' >" + title + "</button>";
+        }
+    })
+
     if(animeTitle === correctAnimeTitle) {
+        print += "<button class='btn btn-primary' onclick='getRandomAnimes()'>" + "Next" + "</button>";
         currentScore++;
-        getRandomAnimes();
     }
     else {
-        endScreen();
+        print += "<button class='btn btn-danger' onclick='endScreen()'>" + "Back" + "</button>";
     }
+
+    document.getElementById("choice-container").innerHTML = print;
+
 }
 
 function endScreen() {
