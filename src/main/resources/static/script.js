@@ -73,7 +73,7 @@ function addPlayButton() {
 
     if (isLoggedIn) {
         print += "<button class='btn btn-danger' onclick='logout()'>" + "Log out" + "</button>";
-        print += "<button class='btn btn-secondary'>" + "See stats" + "</button>";
+        print += "<button class='btn btn-secondary' onclick='seeStats()'>" + "See stats" + "</button>";
         print += "<div class='text-primary font-weight-bold'>You are currently logged in as: " + currentAccount.firstname + " " + currentAccount.lastname + "</div>";
     } else {
         print += "<button class='btn btn-primary' onclick='addCreateAccount()'>" + "Create account" + "</button>";
@@ -150,10 +150,15 @@ function logout() {
 function addCreateAccount() {
     if(!isLoggedIn) {
         let print = "<input class='form-control' id='firstnameInput' type='text' placeholder='Firstname'>";
+        print += "<div id='firstnameError'></div>"
         print += "<input class='form-control' id='lastnameInput' type='text' placeholder='Lastname'>";
+        print += "<div id='lastnameError'></div>"
         print += "<input class='form-control' id='emailInput' type='text' placeholder='Email'>";
+        print += "<div id='emailError'></div>"
         print += "<input class='form-control' id='passwordInput' type='text' placeholder='Password'>";
+        print += "<div id='passwordError'></div>"
         print += "<input class='form-control' id='confirmPasswordInput' type='text' placeholder='Confirm Password'>";
+        print += "<div id='confirmPasswordError'></div>"
         print += "<button class='btn btn-primary' onclick='validateInputs()'>" + "Create Account" + "</button>";
         print += "<button class='btn btn-secondary' onclick='addPlayButton()'>" + "Back" + "</button>";
 
@@ -176,7 +181,9 @@ function validateInputs() {
         inputCounter++;
     }
     else {
-        //feilmelding her
+        let print = "Your passwords do not match";
+        print = print.fontcolor("RED");
+        document.getElementById("confirmPasswordError").innerHTML = print;
     }
 
 
@@ -193,11 +200,11 @@ function stringValidation(string, type) {
     const namePattern = /^[a-zA-ZæøåÆØÅ]+$/;
 
     if(!namePattern.test(string)) {
-        /*
-        let out = "You have to write a valid name";
-        out = out.fontcolor("RED");
-        document.getElementById(type + "Error").innerHTML = out;
-         */
+
+        let print = "You have to write a valid name";
+        print = print.fontcolor("RED");
+        document.getElementById(type + "Error").innerHTML = print;
+
     }
     else {
         inputCounter++;
@@ -208,11 +215,9 @@ function emailValidation(email) {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if(!emailPattern.test(email)) {
-        /*
-        let out = "You have to write a valid email";
-        out = out.fontcolor("RED");
-        document.getElementById("emailError").innerHTML = out;
-         */
+        let print = "You have to write a valid email";
+        print = print.fontcolor("RED");
+        document.getElementById("emailError").innerHTML = print;
     }
     else {
         inputCounter++;
@@ -224,7 +229,9 @@ function passwordValidation(password) {
     const passwordPattern = /^(?=.*[\wÆØÅæøå])(?=.*[\d])(?=.*[\W_]).{8,}$/;
 
     if(!passwordPattern.test(password)) {
-        //NOE SKJER HER
+        let print = "Password needs to be min 8 characters long, min 1 number, min 1 special character";
+        print = print.fontcolor("RED");
+        document.getElementById("passwordError").innerHTML = print;
     }
     else {
         inputCounter++;
@@ -268,7 +275,15 @@ function createAccount() {
         .catch(error => {
         console.error("There was an error while creating account: ", error);
     })
+}
 
+function seeStats() {
+    let print = "<div>" + "" + "</div>";
+    print += "<div>" + "" + "</div>";
+    print += "<div>" + "" + "</div>";
+    print += "<button class='btn btn-secondary' onclick='addPlayButton()'>" + "Back" + "</button>";
+
+    document.getElementById("main-container").innerHTML = print;
 }
 
 function resetMainContainer() {
