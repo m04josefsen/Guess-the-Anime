@@ -20,14 +20,36 @@ public class AccountController {
     @Autowired
     private AccountRepository rep;
 
+    private boolean validateAccount(Account account) {
+        String namePattern = "^[a-zA-ZæøåÆØÅ]+$";
+        String emailPattern = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
+        String passwordPattern = "^(?=.*[\\wÆØÅæøå])(?=.*[\\d])(?=.*[\\W_]).{8,}$";
+        boolean firstnameOK = account.getFirstname().matches(namePattern);
+        boolean lastnameOK = account.getLastname().matches(namePattern);
+        boolean emailOK = account.getEmail().matches(emailPattern);
+        boolean passwordOK = account.getPassword().matches(passwordPattern);
+
+        if(firstnameOK && lastnameOK && emailOK && passwordOK) {
+            return true;
+        }
+        logger.severe("Error in validating account");
+        return false;
+
+    }
+
     @PostMapping("/saveAccount")
     public void saveAccount(@RequestBody Account account) {
         try {
-            String hashedPassword = BCrypt.hashpw(account.getPassword(), BCrypt.gensalt());
-            account.setPassword(hashedPassword);
+            if(validateAccount(account)) {
+                String hashedPassword = BCrypt.hashpw(account.getPassword(), BCrypt.gensalt());
+                account.setPassword(hashedPassword);
 
-            rep.save(account);
-            logger.info("Account saved successfully");
+                rep.save(account);
+                logger.info("Account saved successfully");
+            }
+            else {
+                //HTTPS response here
+            }
         }
         catch (Exception e) {
             logger.severe("Error in saveAccount: " + e.getMessage());
@@ -74,9 +96,17 @@ public class AccountController {
     @PostMapping("/updateAccount")
     public Account updateAccount(@RequestBody Account account) {
         try {
-            Account acc = rep.save(account);
-            logger.info("Account updated successfully");
-            return acc;
+            if(validateAccount(account)) {
+
+
+                Account acc = rep.save(account);
+                logger.info("Account updated successfully");
+                return acc;
+            }
+            else {
+                //HTTPS response here
+                return null;
+            }
         }
         catch(Exception e) {
             logger.severe("Error in updateAccount: " + e.getMessage());
