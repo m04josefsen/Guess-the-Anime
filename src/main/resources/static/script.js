@@ -252,7 +252,9 @@ function createAccount() {
         firstname : document.getElementById("firstnameInput").value,
         lastname : document.getElementById("lastnameInput").value,
         password : document.getElementById("passwordInput").value,
-        highscore : 0
+        highscore : 0,
+        totalscore : 0,
+        gamesPlayed : 0
     };
 
     fetch("saveAccount", {
@@ -261,7 +263,8 @@ function createAccount() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(account)
-    }).then(response => {
+    })
+        .then(response => {
         if(!response.ok) {
             throw new Error("Response was not ok");
         }
@@ -285,9 +288,9 @@ function createAccount() {
 }
 
 function seeStats() {
-    let print = "<div>" + "" + "</div>";
-    print += "<div>" + "" + "</div>";
-    print += "<div>" + "" + "</div>";
+    let print = "<div>" + "Highscore: " + currentAccount.highscore + "</div>";
+    print += "<div>" + "Total score" + currentAccount.totalscore + "</div>";
+    print += "<div>" + "Games played" + currentAccount.gamesPlayed + "</div>";
     print += "<button class='btn btn-secondary' onclick='addPlayButton()'>" + "Back" + "</button>";
 
     document.getElementById("main-container").innerHTML = print;
@@ -377,30 +380,30 @@ function checkAnswer(correctAnimeTitle, animeTitle, animeTitles) {
 
 function endScreen() {
     if(currentScore > currentAccount.highscore) {
-        //TODO: må ha post for å oppdatere account, både på server og her
         currentAccount.highscore = currentScore;
+    }
+    currentAccount.totalscore += currentScore;
+    currentAccount.gamesPlayed++;
 
-        fetch("updateAccount", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(currentAccount)
-        })
-            .then(response => {
+    fetch("updateAccount", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(currentAccount)
+    })
+        .then(response => {
             if(!response.ok) {
                 throw new Error("Response was not ok");
             }
             return response.json();
         })
-            .then(data => {
+        .then(data => {
             //noe her
         })
-            .catch(error => {
+        .catch(error => {
             console.error("There was an error while saving account: ", error);
         })
-
-    }
 
     let print = "<button class='btn btn-danger' onclick='addPlayButton()'>" + "Go back" + "</button>";
     print += "<div>" + "Score: " + currentScore + "</div>";
