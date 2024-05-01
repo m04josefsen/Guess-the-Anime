@@ -32,22 +32,29 @@ public class AnimeController {
     @GetMapping("/getRandomAnimes")
     public List<Anime> getRandomAnimes() {
         List<Anime> list = new ArrayList<>();
-        list.add(getRandomAnime());
-        while(list.size() != 4) {
-            Anime temp = getRandomAnime();
-            boolean isDuplicate = false;
+        try {
+            list.add(getRandomAnime());
+            while (list.size() != 4) {
+                Anime temp = getRandomAnime();
+                boolean isDuplicate = false;
 
-            for(Anime a : list) {
-                if(a == temp) {
-                    isDuplicate = true;
-                    break;
+                for (Anime a : list) {
+                    if (a == temp) {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+                if (!isDuplicate) {
+                    list.add(temp);
                 }
             }
-            if(!isDuplicate) {
-                list.add(temp);
-            }
+            logger.info("Anime list size is: " + list.size());
+            return list;
         }
-        return list;
+        catch(Exception e) {
+            logger.severe("Error in getRandomAnimes: " + e.getMessage());
+            return null;
+        }
     }
 
     public Anime getRandomAnime() {
