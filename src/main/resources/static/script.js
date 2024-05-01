@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function fetchTopAnimes(page) {
-    //const url = "https://api.jikan.moe/v4/top/anime";
     const url = `https://api.jikan.moe/v4/top/anime?page=${page}`;
 
     fetch(url, {
@@ -289,8 +288,8 @@ function createAccount() {
 
 function seeStats() {
     let print = "<div>" + "Highscore: " + currentAccount.highscore + "</div>";
-    print += "<div>" + "Total score" + currentAccount.totalscore + "</div>";
-    print += "<div>" + "Games played" + currentAccount.gamesPlayed + "</div>";
+    print += "<div>" + "Total score: " + currentAccount.totalscore + "</div>";
+    print += "<div>" + "Games played: " + currentAccount.gamesPlayed + "</div>";
     print += "<button class='btn btn-secondary' onclick='addPlayButton()'>" + "Back" + "</button>";
 
     document.getElementById("main-container").innerHTML = print;
