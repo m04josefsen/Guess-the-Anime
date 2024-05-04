@@ -97,8 +97,6 @@ public class AccountController {
     public Account updateAccount(@RequestBody Account account) {
         try {
             if(validateAccount(account)) {
-
-
                 Account acc = rep.save(account);
                 logger.info("Account updated successfully");
                 return acc;
