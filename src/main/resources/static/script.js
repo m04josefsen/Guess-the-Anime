@@ -41,10 +41,13 @@ function fetchTopAnimes(page) {
 
 function fetchAnimeInformation() {
     for(anime of animeRanking) {
+        const cleanedTitleEnglish = anime.title_english.replace("'", '');
+
         const aniObject = {
             malId : anime.mal_id,
             titleOriginal : anime.title,
-            titleEnglish : anime.title_english,
+            //titleEnglish : anime.title_english,
+            titleEnglish : cleanedTitleEnglish,
             releaseYear : anime.year,
             url : anime.url,
             imageUrl : anime.images.jpg.large_image_url
@@ -312,7 +315,6 @@ function getRandomAnimes() {
     })
         .then(animeList => {
         console.log(animeList);
-
         displayQuestion(animeList);
     })
         .catch(error => {
