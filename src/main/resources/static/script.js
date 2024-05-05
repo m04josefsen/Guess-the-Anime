@@ -7,9 +7,10 @@ let currentAccount = {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
-    fetchTopAnimes(1);
-    fetchTopAnimes(2);
-    fetchTopAnimes(3);
+    for(let i = 1; i <= 3; i++) {
+        fetchTopAnimes(i);
+    }
+
     addPlayButton();
 
     console.log('Document is ready');
@@ -99,7 +100,7 @@ function addPlayButton() {
 function addLoginInputs() {
     if(!isLoggedIn) {
         let print = "<input class='form-control' id='emailLoginInput' type='text' placeholder='Email'>";
-        print += "<input class='form-control' id='passwordLoginInput' type='text' placeholder='Password'>";
+        print += "<input class='form-control' id='passwordLoginInput' type='password' placeholder='Password'>";
         print += "<button class='btn btn-primary' onclick='login()'>" + "Log in" + "</button>";
         print += "<button class='btn btn-secondary' onclick='addPlayButton()'>" + "Back" + "</button>";
 
@@ -164,9 +165,9 @@ function addCreateAccount() {
         print += "<div id='lastnameError'></div>"
         print += "<input class='form-control' id='emailInput' type='text' placeholder='Email'>";
         print += "<div id='emailError'></div>"
-        print += "<input class='form-control' id='passwordInput' type='text' placeholder='Password'>";
+        print += "<input class='form-control' id='passwordInput' type='password' placeholder='Password'>";
         print += "<div id='passwordError'></div>"
-        print += "<input class='form-control' id='confirmPasswordInput' type='text' placeholder='Confirm Password'>";
+        print += "<input class='form-control' id='confirmPasswordInput' type='password' placeholder='Confirm Password'>";
         print += "<div id='confirmPasswordError'></div>"
         print += "<button class='btn btn-primary' onclick='validateInputs()'>" + "Create Account" + "</button>";
         print += "<button class='btn btn-secondary' onclick='addPlayButton()'>" + "Back" + "</button>";
